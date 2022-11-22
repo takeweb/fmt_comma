@@ -1,4 +1,15 @@
-pub fn fmt_comma(n: isize) -> String {
+/// format comma
+/// # Example
+/// ```
+/// use fmt_comma::{format, format_decimal, rm_comma, rm_comma_decimal};
+/// let pc_price: f32 = 9800000.0;
+/// let company_a_send_cost: f32 = 1200.0;
+/// let company_a_pc_price = pc_price * 0.8 + company_a_send_cost;
+/// let company_b_pc_price = pc_price * 0.9;
+/// println!("Company A:{}yen", format(company_a_pc_price as isize)); // → 7,841,200yen
+/// println!("Company B:{}yen", format(company_b_pc_price as isize)); // → 8,820,000yen
+/// ```
+pub fn format(n: isize) -> String {
     let chars: Vec<char> = n.to_string().chars().collect();
     let vec: Vec::<String> = chars.iter()
                                     .enumerate()
@@ -17,13 +28,21 @@ fn split(i: usize, c: &char, len: usize) -> String {
     s
 }
 
-pub fn fmt_comma_decimal(n: f64) -> String {
+// format comma for decimal
+// # Example
+// ```
+// println!("Company C:{}yen", format_decimal(10003.333));   // → 10,003.333yen
+// println!("Company D:{}yen", format_decimal(3380.2));      // → 3,380.2yen
+// println!("Company E:{}yen", format_decimal(3380.0));      // → 3,380yen
+// ```
+
+pub fn format_decimal(n: f64) -> String {
     let s: String = n.to_string();
     let vec: Vec<String> = s.split('.')
                                 .map(|s| s.to_string())
                                 .collect();
     let param = vec[0].parse::<isize>().unwrap();
-    let mut result = fmt_comma(param);
+    let mut result = format(param);
     if vec.len() > 1 {
         result.push('.');
         result.push_str(vec[1].as_str());
@@ -31,10 +50,20 @@ pub fn fmt_comma_decimal(n: f64) -> String {
     result
 }
 
+// remove comma
+// # Example
+// ```
+// println!("Company F:{}yen", rm_comma("10,003")); // → 10003yen
+// ```
 pub fn rm_comma(s: &str) -> isize {
     s.replace(",", "").parse::<isize>().unwrap()
 }
 
+// remove comma for decimal
+// # Example
+// ```
+// println!("Company G:{}yen", rm_comma_decimal("10,003.333")); // → 10003.333yen
+// ```
 pub fn rm_comma_decimal(s: &str) -> f64 {
     let vec: Vec<String> = s.split('.')
                                 .map(|s| s.to_string())
@@ -50,12 +79,12 @@ pub fn rm_comma_decimal(s: &str) -> f64 {
 }
 
 #[test]
-fn test_fmt_comma() {
-    assert_eq!(fmt_comma(338), "338");
-    assert_eq!(fmt_comma(3380), "3,380");
-    assert_eq!(fmt_comma(33800), "33,800");
-    assert_eq!(fmt_comma(338000000), "338,000,000");
-    assert_eq!(fmt_comma(3380000000), "3,380,000,000");
+fn test_format() {
+    assert_eq!(format(338), "338");
+    assert_eq!(format(3380), "3,380");
+    assert_eq!(format(33800), "33,800");
+    assert_eq!(format(338000000), "338,000,000");
+    assert_eq!(format(3380000000), "3,380,000,000");
 }
 
 #[test]
@@ -69,21 +98,21 @@ fn test_rm_comma() {
 
 #[test]
 fn test_fmt_comma_decimal() {
-    assert_eq!(fmt_comma_decimal(338 as f64), "338");
-    assert_eq!(fmt_comma_decimal(3380 as f64), "3,380");
-    assert_eq!(fmt_comma_decimal(33800 as f64), "33,800");
-    assert_eq!(fmt_comma_decimal(338000000 as f64), "338,000,000");
-    assert_eq!(fmt_comma_decimal(3380000000u32 as f64), "3,380,000,000");
-    assert_eq!(fmt_comma_decimal(338.2 as f64), "338.2");
-    assert_eq!(fmt_comma_decimal(3380.2 as f64), "3,380.2");
-    assert_eq!(fmt_comma_decimal(33800.2 as f64), "33,800.2");
-    assert_eq!(fmt_comma_decimal(338000000.2 as f64), "338,000,000.2");
-    assert_eq!(fmt_comma_decimal(3380000000.2 as f64), "3,380,000,000.2");
-    assert_eq!(fmt_comma_decimal(338.0 as f64), "338");
-    assert_eq!(fmt_comma_decimal(3380.0 as f64), "3,380");
-    assert_eq!(fmt_comma_decimal(33800.0 as f64), "33,800");
-    assert_eq!(fmt_comma_decimal(338000000.0 as f64), "338,000,000");
-    assert_eq!(fmt_comma_decimal(3380000000.0 as f64), "3,380,000,000");
+    assert_eq!(format_decimal(338 as f64), "338");
+    assert_eq!(format_decimal(3380 as f64), "3,380");
+    assert_eq!(format_decimal(33800 as f64), "33,800");
+    assert_eq!(format_decimal(338000000 as f64), "338,000,000");
+    assert_eq!(format_decimal(3380000000u32 as f64), "3,380,000,000");
+    assert_eq!(format_decimal(338.2 as f64), "338.2");
+    assert_eq!(format_decimal(3380.2 as f64), "3,380.2");
+    assert_eq!(format_decimal(33800.2 as f64), "33,800.2");
+    assert_eq!(format_decimal(338000000.2 as f64), "338,000,000.2");
+    assert_eq!(format_decimal(3380000000.2 as f64), "3,380,000,000.2");
+    assert_eq!(format_decimal(338.0 as f64), "338");
+    assert_eq!(format_decimal(3380.0 as f64), "3,380");
+    assert_eq!(format_decimal(33800.0 as f64), "33,800");
+    assert_eq!(format_decimal(338000000.0 as f64), "338,000,000");
+    assert_eq!(format_decimal(3380000000.0 as f64), "3,380,000,000");
 }
 
 #[test]
