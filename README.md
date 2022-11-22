@@ -1,7 +1,9 @@
 # Format Comma library
 
 * Add Comma
+* Add Comma for decimal
 * Remove Comma
+* Remove Comma for decimal
 
 ## Installation
 
@@ -18,6 +20,12 @@ fn main() {
     let company_b_pc_price = pc_price * 0.9;
     println!("Company A:{}yen", fmt_comma(company_a_pc_price as isize));    // → 7,841,200yen
     println!("Company B:{}yen", fmt_comma(company_b_pc_price as isize));    // → 8,820,000yen
+}
+```
+
+## Example(Add comma for decimal)
+```
+fn main() {
     println!("Company C:{}yen", fmt_comma_decimal(10003.333));  // → 10,003.333yen
     println!("Company D:{}yen", fmt_comma_decimal(3380.2));     // → 3,380.2yen
     println!("Company E:{}yen", fmt_comma_decimal(3380.0));     // → 3,380yen
@@ -28,6 +36,12 @@ fn main() {
 ```
 fn main() {
     println!("F社:{}円", rm_comma("10,003"));               // → 10003yen
+}
+```
+
+## Example(Remove comma for decimal)
+```
+fn main() {
     println!("G社:{}円", rm_comma_decimal("10,003.333"));   // → 10003.333yen
 }
 ```
